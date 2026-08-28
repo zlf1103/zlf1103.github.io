@@ -1,0 +1,19 @@
+{{- $pages := where .Site.RegularPages "Type" "in" site.Params.mainSections -}}
+[
+  {{- range $index, $page := $pages }}
+  {{- $cats := slice -}}
+  {{- range $page.GetTerms "categories" }}{{ $cats = $cats | append .Title }}{{ end -}}
+  {{- $tags := slice -}}
+  {{- range $page.GetTerms "tags" }}{{ $tags = $tags | append .Title }}{{ end -}}
+  {{- if $index }},{{ end }}
+  {
+    "title": {{ $page.Title | jsonify }},
+    "url": {{ $page.RelPermalink | jsonify }},
+    "date": {{ $page.Date.Format "2006-01-02" | jsonify }},
+    "summary": {{ $page.Summary | plainify | jsonify }},
+    "content": {{ $page.Plain | truncate 5000 | jsonify }},
+    "categories": {{ $cats | jsonify }},
+    "tags": {{ $tags | jsonify }}
+  }
+  {{- end }}
+]

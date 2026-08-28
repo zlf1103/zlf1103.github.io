@@ -1,0 +1,100 @@
+<div class="mb-4 relative">
+  <div class="relative">
+    <input
+      id="search-input"
+      class="search-input !pl-10"
+      type="search"
+      placeholder="{{ i18n "search_placeholder" }}"
+      autocomplete="off"
+      aria-label="{{ i18n "search" }}"
+    />
+    <span
+      class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+    >
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </div>
+  <div
+    id="search-results"
+    class="hidden absolute z-30 mt-2 w-full search-result-panel overflow-hidden"
+  ></div>
+</div>
+<script src="{{ "js/fuse.min.js" | relURL }}"></script>
+<script>
+  (function () {
+    var indexUrl = "{{ "/index.json" | relURL }}";
+    var input = document.getElementById("search-input");
+    var results = document.getElementById("search-results");
+    var fuse = null;
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    fetch(indexUrl)
+      .then(function (r) {
+        return r.json();
+      })
+      .then(function (data) {
+        fuse = new Fuse(data, {
+          keys: ["title", "summary", "content", "tags", "categories"],
+          threshold: 0.35,
+          ignoreLocation: true,
+          minMatchCharLength: 1
+        });
+      })
+      .catch(function () {});
+
+    function render(hits) {
+      if (!hits.length) {
+        results.innerHTML =
+          '<div class="px-4 py-3 text-sm text-gray-400">{{ i18n "no_results" }}</div>';
+      } else {
+        results.innerHTML = hits
+          .map(function (h) {
+            var p = h.item;
+            return (
+              '<a href="' +
+              escapeHtml(p.url) +
+              '" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 border-b border-white/5 last:border-0">' +
+              '<span class="shrink-0 h-8 w-8 rounded-lg bg-linear-to-br from-neon-500/40 to-accent-600/40 flex items-center justify-center text-white font-bold text-xs">' +
+              escapeHtml(p.title.charAt(0)) +
+              "</span>" +
+              '<span class="min-w-0">' +
+              '<span class="block text-sm font-medium text-gray-100 truncate">' +
+              escapeHtml(p.title) +
+              "</span>" +
+              '<span class="block text-xs text-gray-500 truncate">' +
+              escapeHtml(p.summary) +
+              "</span>" +
+              "</span>" +
+              "</a>"
+            );
+          })
+          .join("");
+      }
+      results.classList.remove("hidden");
+    }
+
+    input.addEventListener("input", function () {
+      var q = input.value.trim();
+      if (!q || !fuse) {
+        results.classList.add("hidden");
+        return;
+      }
+      render(fuse.search(q).slice(0, 8));
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!input.contains(e.target) && !results.contains(e.target)) {
+        results.classList.add("hidden");
+      }
+    });
+  })();
+</script>

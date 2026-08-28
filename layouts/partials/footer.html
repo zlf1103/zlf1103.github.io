@@ -1,0 +1,91 @@
+<footer class="mt-16 border-t border-white/10 bg-night-950/70">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <!-- 站点信息 -->
+      <div class="lg:col-span-2">
+        <a href="{{ site.BaseURL | relLangURL }}" class="flex items-center gap-2.5">
+          <span
+            class="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-neon-500 to-accent-600 shadow-[0_0_20px_-4px_rgba(34,211,238,0.6)]"
+          >
+            <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="leading-tight">
+            <span class="block text-[15px] font-bold text-white">{{ site.Title }}</span>
+            <span class="block text-[11px] text-gray-400">{{ i18n "site_subtitle" | default "资源分享站" }}</span>
+          </span>
+        </a>
+        <p class="mt-4 text-sm text-gray-500 leading-relaxed max-w-md">
+          {{ site.Params.description }}
+        </p>
+        <!-- 社交联系方式（暂时隐藏，恢复时取消注释）
+        <div class="mt-5 flex items-center gap-2">
+          {{ range .Site.Params.social }}
+            <a
+              href="{{ .url }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="{{ .name }}"
+              class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-gray-400 hover:text-neon-300 hover:border-neon-500/40 transition-colors"
+            >
+              {{ partial "icon.html" (dict "name" .icon "class" "text-lg") }}
+            </a>
+          {{ end }}
+        </div>
+        -->
+      </div>
+
+      <!-- 资源分类 -->
+      <div>
+        <h3 class="text-sm font-bold text-white mb-4">{{ i18n "categories" }}</h3>
+        <ul class="space-y-2.5">
+          {{ range $name, $value := .Site.Taxonomies.categories }}
+            <li>
+              <a
+                href="{{ $value.Page.RelPermalink }}"
+                class="text-sm text-gray-500 hover:text-neon-300 transition-colors flex items-center gap-2"
+              >
+                <span class="h-1 w-1 rounded-full bg-neon-500/60 inline-block"></span>
+                {{ $value.Page.Title }}
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      </div>
+
+      <!-- 快速导航 -->
+      <div>
+        <h3 class="text-sm font-bold text-white mb-4">{{ i18n "quick_links" | default "快速导航" }}</h3>
+        <ul class="space-y-2.5">
+          {{ range .Site.Menus.main }}
+            <li>
+              <a
+                href="{{ .URL }}"
+                class="text-sm text-gray-500 hover:text-neon-300 transition-colors flex items-center gap-2"
+              >
+                <span class="h-1 w-1 rounded-full bg-accent-500/60 inline-block"></span>
+                {{ .Name }}
+              </a>
+            </li>
+          {{ end }}
+          <li>
+            <a
+              href="{{ "/" | relLangURL }}#resources"
+              class="text-sm text-gray-500 hover:text-neon-300 transition-colors flex items-center gap-2"
+            >
+              <span class="h-1 w-1 rounded-full bg-accent-500/60 inline-block"></span>
+              {{ i18n "resource_center" | default "资源中心" }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-10 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600"
+    >
+      <p>© {{ now.Format "2006" }} {{ site.Title }} · All rights reserved.</p>
+    </div>
+  </div>
+</footer>

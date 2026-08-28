@@ -1,0 +1,36 @@
+<div class="card-panel overflow-hidden mb-4">
+  <div class="px-5 py-4 border-b border-white/5">
+    <p
+      class="text-xs font-semibold uppercase tracking-widest text-gray-400"
+    >
+      {{ i18n "archives" }}
+    </p>
+  </div>
+  {{ if eq .Site.Params.archive_dropdown "false" }}
+    <div class="divide-y divide-white/5">
+      {{ range $name, $items := .Site.Taxonomies.archives }}
+        <a
+          class="flex items-center justify-between px-5 py-3 hover:bg-white/5 transition-colors duration-150 text-sm text-gray-300"
+          href="{{ $items.Page.RelPermalink }}"
+          ><span>{{ $name }}</span
+          ><span class="badge !py-0.5">{{ $items.Count }}</span></a
+        >
+      {{ end }}
+    </div>
+  {{ else }}
+    <div class="p-4">
+      <select
+        class="w-full px-3 py-2 text-sm rounded-lg border border-white/10 bg-night-800 text-gray-300 focus:outline-none focus:border-neon-500/50 focus:ring-2 focus:ring-neon-500/20"
+        name="archive"
+        onChange="location.href=value;"
+      >
+        <option>{{ i18n "select_archive" }}</option>
+        {{ range $name, $items := .Site.Taxonomies.archives }}
+          <option value="{{ $items.Page.RelPermalink }}">
+            {{ $name }} ({{ $items.Count }})
+          </option>
+        {{ end }}
+      </select>
+    </div>
+  {{ end }}
+</div>

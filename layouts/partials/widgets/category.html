@@ -1,0 +1,25 @@
+{{ if .Site.Taxonomies.categories }}
+  <div class="card-panel overflow-hidden mb-4">
+    <div class="px-5 py-4 border-b border-white/5">
+      <p
+        class="text-xs font-semibold uppercase tracking-widest text-gray-400"
+      >
+        {{ i18n "categories" }}
+      </p>
+    </div>
+    <div class="divide-y divide-white/5">
+      <a
+        class="flex items-center justify-between px-5 py-3 hover:bg-white/5 transition-colors duration-150 text-sm text-gray-300"
+        href="{{ with .Site.GetPage "section" "post" }}{{ .RelPermalink }}{{ else }}{{ "post/" | relURL }}{{ end }}"
+        ><span>全部资源</span></a
+      >
+      {{ range $key, $value := .Site.Taxonomies.categories }}
+        <a
+          class="flex items-center justify-between px-5 py-3 hover:bg-white/5 transition-colors duration-150 text-sm text-gray-300"
+          href="{{ $value.Page.RelPermalink }}"
+          ><span>{{ $value.Page.Title }}</span></a
+        >
+      {{ end }}
+    </div>
+  </div>
+{{ end }}

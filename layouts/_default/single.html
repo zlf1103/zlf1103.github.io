@@ -1,0 +1,31 @@
+{{ define "main" }}
+  <div class="max-w-4xl mx-auto">
+    <!-- 落地页 Hero -->
+    <section class="pt-14 pb-10 text-center">
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-neon-500/30 bg-neon-500/10 px-4 py-1.5 text-xs font-medium text-neon-300"
+      >
+        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M5.6 18.4l2.1-2.1m8.6-8.6 2.1-2.1" stroke-linecap="round"/>
+          <circle cx="12" cy="12" r="3.5"/>
+        </svg>
+        {{ site.Title }}
+      </span>
+      <h1 class="mt-5 text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+        {{ .Title }}
+      </h1>
+      {{ with .Description }}
+        <p class="mt-4 text-base text-gray-400 max-w-2xl mx-auto leading-relaxed">
+          {{ . }}
+        </p>
+      {{ end }}
+    </section>
+
+    <!-- 正文 -->
+    <article class="card p-6 sm:p-8">
+      <div class="prose prose-sm sm:prose-base max-w-none">
+        {{ .Content }}
+      </div>
+    </article>
+  </div>
+{{ end }}

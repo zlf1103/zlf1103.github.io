@@ -1,0 +1,85 @@
+{{- $.Scratch.Set "seo" dict -}}
+
+{{/* Date */}}
+{{- if not .PublishDate.IsZero -}}
+  {{- $.Scratch.SetInMap "seo" "published_time" (.PublishDate.Format "2006-01-02T15:04:05-07:00") -}}
+{{- else if not .Date.IsZero -}}
+  {{- $.Scratch.SetInMap "seo" "published_time" (.Date.Format "2006-01-02T15:04:05-07:00") -}}
+{{- end -}}
+{{- if not .Lastmod.IsZero -}}
+  {{- $.Scratch.SetInMap "seo" "updated_time" (.Lastmod.Format "2006-01-02T15:04:05-07:00") -}}
+{{- end -}}
+
+{{/* Description */}}
+{{ $description := "" }}
+{{/* 1. SEO Description */}}
+{{- if .Params.seo.description -}}
+  {{- $description = .Params.seo.description -}}
+{{- else if .Params.description -}}
+  {{- $description = .Params.description | plainify -}}
+{{- else if .Summary -}}
+  {{- $description = .Summary -}}
+{{- else -}}
+  {{- $description = .Site.Params.Description -}}
+{{- end -}}
+
+{{- $.Scratch.SetInMap "seo" "description" $description -}}
+
+{{/* Site Name */}}
+{{- with .Param "seo.site_name" -}}
+  {{- $.Scratch.SetInMap "seo" "site_name" . -}}
+{{- else -}}
+  {{- $.Scratch.SetInMap "seo" "site_name" .Site.Title -}}
+{{- end -}}
+
+{{/* X(Twitter) */}}
+{{- $.Scratch.SetInMap "seo" "twitter_card" "summary_large_image" -}}
+{{- with .Site.Params.twitter -}}
+  {{- $.Scratch.SetInMap "seo" "twitter_handle" (printf "@%s" .) -}}
+{{- end -}}
+
+{{/* Type：文章/博客页输出 article */}}
+{{- $.Scratch.SetInMap "seo" "type" "website" -}}
+{{- if in (slice "blog" "news" "post") .Type -}}
+  {{- $.Scratch.SetInMap "seo" "type" "article" -}}
+{{- end -}}
+
+{{/* Language：按站点语言映射 og:locale（如 zh-cn → zh_CN） */}}
+{{- $locale := "en_US" -}}
+{{- with site.Language.Locale -}}
+  {{- $locale = replace . "-" "_" -}}
+  {{- $parts := split $locale "_" -}}
+  {{- if eq (len $parts) 2 -}}
+    {{- $locale = printf "%s_%s" (index $parts 0) (index $parts 1 | upper) -}}
+  {{- end -}}
+{{- end -}}
+{{- $.Scratch.SetInMap "seo" "locale" $locale -}}
+
+{{/* Canonical */}}
+{{ with .Params.seo.canonical }}
+  {{- $.Scratch.SetInMap "seo" "canonical" (. | absURL) -}}
+{{ else }}
+  {{- $.Scratch.SetInMap "seo" "canonical" .Permalink -}}
+{{ end }}
+
+{{- partial "seo/extend" . -}}
+
+{{ partial "seo/tags" (dict "page" $ "seo" ($.Scratch.Get "seo")) }}
+{{ with .Site.Params.seo.jsonld }}
+  {{ partial "seo/jsonld" (dict "page" $ "seo" ($.Scratch.Get "seo")) }}
+{{ end }}
+
+{{ with .Site.Params.seo.debug }}
+  {{ partial "seo/debug" $ }}
+{{ end }}
+
+{{/* OG Image：有文章图用文章图，否则用站点配置的 og_image，都没有则不输出 */}}
+{{- if .Params.image -}}
+  {{- $img := .Params.image | absURL -}}
+  <meta property="og:image" content="{{ $img }}" />
+  <meta property="og:image:url" content="{{ $img }}" />
+{{- else if .Site.Params.og_image -}}
+  {{- $img := .Site.Params.og_image | absURL -}}
+  <meta property="og:image" content="{{ $img }}" />
+  <meta property="og:image:url" content="{{ $img }}" />
+{{- end -}}

@@ -1,0 +1,21 @@
+# ===== Hugo 构建产物 =====
+/public
+/resources/_gen/
+/hugo_stats.json
+.hugo_build.lock
+
+# ===== 依赖 =====
+/node_modules/
+
+# ===== 备份与临时文件 =====
+*.bak
+*.tmp
+*~
+
+# ===== 系统与编辑器 =====
+.DS_Store
+/.obsidian/workspace.json
+/.obsidian/plugins/remember-cursor-position/
+
+# ===== CodeBuddy 项目数据 =====
+.codebuddy/

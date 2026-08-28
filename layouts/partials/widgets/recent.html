@@ -1,0 +1,33 @@
+{{ $recent := where .Site.RegularPages "Type" "in" site.Params.mainSections }}
+{{ $recent_num := ($.Site.Param `recentLimit` | default 5) }}
+{{- if $recent }}
+  <div class="card-panel overflow-hidden mb-4">
+    <div class="px-5 py-4 border-b border-white/5">
+      <p
+        class="text-xs font-semibold uppercase tracking-widest text-gray-400"
+      >
+        {{ i18n "recent_posts" }}
+      </p>
+    </div>
+    <div class="divide-y divide-white/5">
+      {{- range first $recent_num $recent }}
+        <a
+          href="{{ .RelPermalink }}"
+          class="block px-5 py-3 hover:bg-white/5 transition-colors duration-150"
+        >
+          <p
+            class="text-sm font-medium text-gray-200 leading-snug mb-1 line-clamp-1"
+          >
+            {{ .Title }}
+          </p>
+          <div class="flex items-center gap-2 text-xs text-gray-500">
+            <time>{{ .Date.Format "2006/01/02" }}</time>
+            {{ with .Params.resource_version }}
+              <span class="badge !text-[10px] !py-0">v{{ . }}</span>
+            {{ end }}
+          </div>
+        </a>
+      {{- end }}
+    </div>
+  </div>
+{{- end }}

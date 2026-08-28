@@ -1,0 +1,76 @@
+<header class="glass-nav sticky top-0 z-40">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
+      <!-- Logo -->
+      <a href="{{ site.BaseURL | relLangURL }}" class="flex items-center gap-2.5 group">
+        <span
+          class="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-neon-500 to-accent-600 shadow-[0_0_20px_-4px_rgba(34,211,238,0.6)] transition-transform group-hover:scale-105"
+        >
+          <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="leading-tight">
+          <span class="block text-[15px] font-bold text-white">{{ site.Title }}</span>
+          <span class="block text-[11px] text-gray-400 tracking-wide">{{ i18n "site_subtitle" | default "资源分享站" }}</span>
+        </span>
+      </a>
+
+      <!-- 桌面端菜单 -->
+      <nav class="hidden md:flex items-center gap-1">
+        {{ range .Site.Menus.main }}
+          {{- $active := or (and (eq .Page .Page) (eq $.Kind "page")) (eq $.RelPermalink .URL) (eq $.Kind "home") (eq $.Kind "term") -}}
+          <a
+            href="{{ .URL }}"
+            class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ if $.IsMenuCurrent "main" . }}text-neon-300 bg-neon-500/10{{ else }}text-gray-300 hover:text-white hover:bg-white/5{{ end }}"
+          >
+            {{ .Name }}
+          </a>
+        {{ end }}
+        <a
+          href="{{ "/" | relLangURL }}#resources"
+          class="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+        >
+          {{ i18n "resource_center" | default "资源中心" }}
+        </a>
+      </nav>
+
+      <!-- 右侧：移动端菜单按钮 -->
+      <div class="flex items-center gap-2">
+        <button
+          id="nav-toggle"
+          class="md:hidden flex h-9 w-9 items-center justify-center rounded-lg text-gray-300 hover:text-white hover:bg-white/5"
+          aria-label="menu"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 移动端菜单 -->
+  <div id="nav-menu" class="md:hidden hidden border-t border-white/5 px-4 pb-3 pt-2 space-y-1">
+    {{ range .Site.Menus.main }}
+      <a
+        href="{{ .URL }}"
+        class="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5"
+      >{{ .Name }}</a>
+    {{ end }}
+    <a
+      href="{{ "/" | relLangURL }}#resources"
+      class="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5"
+    >{{ i18n "resource_center" | default "资源中心" }}</a>
+  </div>
+</header>
+<script>
+  (function () {
+    var btn = document.getElementById("nav-toggle");
+    var menu = document.getElementById("nav-menu");
+    if (!btn || !menu) return;
+    btn.addEventListener("click", function () {
+      menu.classList.toggle("hidden");
+    });
+  })();
+</script>

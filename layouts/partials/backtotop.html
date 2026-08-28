@@ -1,0 +1,30 @@
+<button
+  id="back-to-top"
+  type="button"
+  aria-label="返回顶部"
+  class="hidden md:flex fixed bottom-6 right-6 z-50 h-11 w-11 items-center justify-center rounded-xl border border-neon-500/40 bg-night-900/85 text-neon-300 shadow-lg backdrop-blur transition-all duration-300 opacity-0 translate-y-3 pointer-events-none hover:border-neon-400 hover:bg-neon-500/15 hover:shadow-[0_0_20px_rgba(34,211,238,0.35)]"
+>
+  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="m18 15-6-6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<script>
+  (function () {
+    var btn = document.getElementById("back-to-top");
+    if (!btn) return;
+    function toggle() {
+      var y = window.scrollY || document.documentElement.scrollTop;
+      if (y > 400) {
+        btn.classList.remove("opacity-0", "translate-y-3", "pointer-events-none");
+      } else {
+        btn.classList.add("opacity-0", "translate-y-3", "pointer-events-none");
+      }
+    }
+    btn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    window.addEventListener("scroll", toggle, { passive: true });
+    toggle();
+  })();
+</script>
