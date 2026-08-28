@@ -34,12 +34,17 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
       - name: Build with Hugo
-        id: build
-        continue-on-error: true
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
         run: |
@@ -48,17 +53,6 @@ jobs:
             --minify \
             -e production \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
-      - name: Diagnose build failure
-        if: steps.build.outcome == 'failure'
-        run: |
-          echo "::error::HUGO_VERSION=$(hugo version)"
-          echo "::error::THEME_DIR: $(ls themes/Blonde 2>&1 | tr '\n' ' ' | cut -c1-120)"
-          hugo --gc --minify -e production --baseURL "${{ steps.pages.outputs.base_url }}/" 2>&1 | tail -30 | while IFS= read -r line; do
-            echo "::error::$line"
-          done
-      - name: Fail build job
-        if: steps.build.outcome == 'failure'
-        run: exit 1
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
