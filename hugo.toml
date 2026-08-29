@@ -83,7 +83,7 @@ darkmode = "light"
   # 百度搜索资源平台验证代码（ziyuan.baidu.com 注册后获取，填入后自动输出验证 meta 标签）
   baidu_verification = ""
   # 必应站长工具验证代码（bing.com/webmasters 注册后获取，填入后自动输出验证 meta 标签）
-  bing_verification = ""
+  bing_verification = "BDABC9551D9ECE43198C3D17D8744D24"
 
   [params.ad]
   # Google AdSense 广告配置（默认关闭，填入后可开启广告位）
