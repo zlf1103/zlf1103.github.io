@@ -48,11 +48,14 @@ jobs:
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
         run: |
+          # 注意：不再用 ${{ steps.pages.outputs.base_url }} 覆盖 baseURL，
+          # 因为配置了自定义域名时它输出的是 http:// 前缀，
+          # 会导致 sitemap.xml / canonical 变成 http 链接，影响 SEO。
+          # 构建统一使用 hugo.toml 中的 baseURL。
           hugo \
             --gc \
             --minify \
-            -e production \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"
+            -e production
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

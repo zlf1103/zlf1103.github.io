@@ -80,6 +80,10 @@ darkmode = "light"
   [params.seo]
   # 启用 JSON-LD 结构化数据（WebSite + Article），利于搜索引擎富摘要
   jsonld = true
+  # 百度搜索资源平台验证代码（ziyuan.baidu.com 注册后获取，填入后自动输出验证 meta 标签）
+  baidu_verification = ""
+  # 必应站长工具验证代码（bing.com/webmasters 注册后获取，填入后自动输出验证 meta 标签）
+  bing_verification = ""
 
   [params.ad]
   # Google AdSense 广告配置（默认关闭，填入后可开启广告位）
@@ -194,6 +198,13 @@ darkmode = "light"
 [outputs]
   # 首页额外输出 JSON（文章索引），供站内本地搜索使用
   home = ["HTML", "RSS", "JSON"]
+
+# ========== Sitemap 配置 ==========
+
+[sitemap]
+  # 页面在 sitemap.xml 中的默认更新频率与优先级
+  changefreq = "weekly"
+  priority = 0.5
 
 # ========== 分类系统 ==========
 

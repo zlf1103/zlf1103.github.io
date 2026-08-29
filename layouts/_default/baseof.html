@@ -2,6 +2,13 @@
 <html lang="{{ site.Language.Locale }}">
   <head>
     {{- partial "analytics" . -}}
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    {{ with site.Params.seo.baidu_verification }}
+      <meta name="baidu-site-verification" content="{{ . }}" />
+    {{ end }}
+    {{ with site.Params.seo.bing_verification }}
+      <meta name="msvalidate.01" content="{{ . }}" />
+    {{ end }}
     <title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ site.Title }}</title>
     <meta charset="utf-8" />
     <meta
