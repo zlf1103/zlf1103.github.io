@@ -49,8 +49,8 @@
           </div>
         </div>
 
-        <!-- 封面图（文章设置 image 字段后显示） -->
-        {{ with .Params.image }}
+        <!-- 封面图（优先 image_hero 文章页大图，回退 image） -->
+        {{ with .Params.image_hero | default .Params.image }}
           <div class="mt-5 overflow-hidden rounded-2xl">
             <img
               src="{{ . | relURL }}"
