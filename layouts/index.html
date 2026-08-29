@@ -117,7 +117,7 @@
           {{ with .Params.categories }}{{ $cat = index . 0 }}{{ end }}
           {{ $cover := index $coverMap $cat | default "cover-default" }}
           <article class="card overflow-hidden group flex flex-col">
-            <a href="{{ .RelPermalink }}" class="block relative h-40 {{ $cover }} overflow-hidden">
+            <a href="{{ .RelPermalink }}" class="block relative aspect-video {{ $cover }} overflow-hidden">
               {{ with .Params.image }}
                 <img
                   src="{{ . | relURL }}"
