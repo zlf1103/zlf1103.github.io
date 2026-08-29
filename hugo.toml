@@ -242,6 +242,15 @@ archive = "archives"
     # 允许 Markdown 中直接使用 HTML 标签（如 <div>、<iframe>）
     unsafe = true
 
+# ========== 压缩配置 ==========
+
+[minify]
+  [minify.tdewolff]
+    [minify.tdewolff.html]
+    # 保留 HTML 属性引号（必应/百度站长工具的验证 meta 标签
+    # 要求标准带引号格式，否则验证器可能匹配不到）
+    keepQuotes = true
+
 # ========== 构建配置 ==========
 
 [build]
