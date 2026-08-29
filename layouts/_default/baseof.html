@@ -9,7 +9,7 @@
     {{ with site.Params.seo.bing_verification }}
       <meta name="msvalidate.01" content="{{ . }}" />
     {{ end }}
-    <title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ site.Title }}</title>
+    <title>{{ if .IsHome }}{{ site.Params.seo.home_title | default site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -23,7 +23,7 @@
     <meta name="theme-color" content="#0a0e19" />
     <meta
       property="og:title"
-      content="{{ if not .IsHome }}{{ .Title }}{{ else }}{{ site.Title }}{{ end }}"
+      content="{{ if .IsHome }}{{ site.Params.seo.home_title | default site.Title }}{{ else }}{{ .Title }}{{ end }}"
     />
     {{ with resources.Get "css/style.css" }}
       {{ $opts := dict "minify" (not hugo.IsDevelopment) }}

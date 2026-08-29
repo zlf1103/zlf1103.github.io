@@ -1,7 +1,10 @@
 # ========== 站点基本信息 ==========
 
-# 站点域名（GitHub Pages 地址），用于生成站点的绝对链接和 sitemap
-baseURL = "https://zlf1103.github.io"
+# 站点域名（当前主域：GitHub Pages 自定义域名 zhikuji.bbroot.com），
+# 用于生成站点的绝对链接、canonical 和 sitemap。
+# 注意：必须先保证浏览器实际访问的地址与 baseURL 一致，否则搜索引擎
+# 会因 canonical 指向与访问域名不符而拒绝收录。
+baseURL = "https://zhikuji.bbroot.com"
 
 # 站点名称，显示在浏览器标签页和页头
 title = "知库集"
@@ -84,6 +87,9 @@ darkmode = "light"
   baidu_verification = ""
   # 必应站长工具验证代码（bing.com/webmasters 注册后获取，填入后自动输出验证 meta 标签）
   bing_verification = "BDABC9551D9ECE43198C3D17D8744D24"
+  # 首页 title（浏览器标签页/搜索结果显示的标题）。
+  # 首页默认直接用 site.title（太短不利于 SEO），可在此覆盖为更完整的标题
+  home_title = "知库集 - 精选软件工具与虚拟资源分享站"
 
   [params.ad]
   # Google AdSense 广告配置（默认关闭，填入后可开启广告位）
